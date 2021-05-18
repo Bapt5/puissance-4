@@ -12,16 +12,11 @@ jeu = [["", "", "", "", "", "", ""], ["", "", "", "", "", "", ""], ["", "", "", 
 
 @app.route('/')
 def index():
-    session['jeu'] = jeu
-    return redirect(url_for('game'))
-
-
-@app.route('/game')
-def game():
     if 'jeu' in session:
         return render_template('index.html', matrice=session['jeu'])
     else:
-        return redirect(url_for('index'))
+        session['jeu'] = jeu
+        return render_template('index.html', matrice=session['jeu'])
 
 
 if __name__ == "__main__":
