@@ -6,8 +6,18 @@ import os
 app = Flask(__name__)
 
 # matrice du jeu
-jeu = [["", "", "", "", "", "", ""], ["", "", "", "", "", "", ""], ["", "", "", "", "", "", ""], [
+matrice = [["", "", "", "", "", "", ""], ["", "", "", "", "", "", ""], ["", "", "", "", "", "", ""], [
     "", "", "", "", "", "", ""], ["", "", "", "", "", "", ""], ["", "", "", "", "", "", ""]]
+
+
+def posePion(jeu, colonne):
+    aJoue = False
+    for ligne in range(len(jeu) - 1, -1, -1):
+        if jeu[ligne][colonne] == "":
+            jeu[ligne][colonne] = 'X'
+            aJoue = True  # indique que le joueur à jouer
+            break
+    return jeu, aJoue
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -16,18 +26,22 @@ def index():
         if request.method == 'GET':
             return render_template('index.html', matrice=session['jeu'])
         else:
-            jouer = False
-            for ligne in range(len(jeu) - 1, -1, -1):
-                colonne = int(request.form['colonne']) - 1
-                if session['jeu'][ligne][colonne] == "":
-                    session['jeu'][ligne][colonne] = 'X'
-                    jouer = True  # indique que le joueur à jouer
-                    break
+            session['jeu'], aJoue = posePion(
+                session['jeu'], int(request.form['colonne']) - 1)
             # Si il n'a pas jouer on le refera jouer
-            return str(jouer)
+            if aJoue == True:
+                return render_template('refresh.html', matrice=session['jeu'])
+            else:
+                return 'None'
     else:
-        session['jeu'] = jeu
+        session['jeu'] = matrice
         return render_template('index.html', matrice=session['jeu'])
+
+
+@app.route('/rejouer/')
+def rejouer():
+    session['jeu'] = matrice
+    return redirect(url_for('index'))
 
 
 if __name__ == "__main__":
