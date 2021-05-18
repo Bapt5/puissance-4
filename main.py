@@ -6,8 +6,7 @@ import os
 app = Flask(__name__)
 
 # matrice du jeu
-matrice = [["", "", "", "", "", "", ""], ["", "", "", "", "", "", ""], ["", "", "", "", "", "", ""], [
-    "", "", "", "", "", "", ""], ["", "", "", "", "", "", ""], ["", "", "", "", "", "", ""]]
+matrice = [["" for i in range(7)] for i in range(6)]
 
 
 def posePion(jeu, colonne):
