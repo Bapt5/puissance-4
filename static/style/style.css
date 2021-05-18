@@ -1,0 +1,24 @@
+body {
+  margin: 0px;
+  padding-top: 2%;
+  padding-bottom: 2%;
+  width: 100%;
+}
+
+.case {
+  background-color: white;
+  border-radius: 50%;
+  height: 50px;
+  width: 50px;
+  border: 5px solid blue;
+}
+
+table {
+  background-color: blue;
+  margin-left: 35%;
+  margin-top: 2%;
+  padding-left: 1%;
+  padding-right: 1%;
+  padding-top: 0%;
+  padding-bottom: 2%;
+}
