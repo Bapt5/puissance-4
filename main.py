@@ -10,10 +10,14 @@ jeu = [["", "", "", "", "", "", ""], ["", "", "", "", "", "", ""], ["", "", "", 
     "", "", "", "", "", "", ""], ["", "", "", "", "", "", ""], ["", "", "", "", "", "", ""]]
 
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def index():
     if 'jeu' in session:
-        return render_template('index.html', matrice=session['jeu'])
+        if request.method == 'GET':
+            return render_template('index.html', matrice=session['jeu'])
+        else:
+            print(request.form['colonne'])
+            return render_template('index.html', matrice=session['jeu'])
     else:
         session['jeu'] = jeu
         return render_template('index.html', matrice=session['jeu'])

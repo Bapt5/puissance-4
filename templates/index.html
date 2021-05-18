@@ -5,6 +5,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Puissance 4</title>
+  <!-- on inclut la bibliothèque depuis les serveurs de Google -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+  <script type="text/javascript" src="{{url_for('static',filename='js/main.js')}}"></script>
   <link rel="stylesheet" href="{{url_for('static',filename='style/style.css')}}">
 </head>
 
@@ -13,8 +16,8 @@
     {%for ligne in matrice%}
     <tr>
       {%for case in ligne%}
-      <td class="case" style="
-        background-color: 
+      <td onclick="send({{loop.index}})" class="case" style="
+        background-color:
         {%if case=='X'%}
           #ef2020
         {%elif case=='O'%}
