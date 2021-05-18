@@ -13,7 +13,16 @@
     {%for ligne in matrice%}
     <tr>
       {%for case in ligne%}
-      <td class="case">{{case}}</td>
+      <td class="case" style="
+        background-color: 
+        {%if case=='X'%}
+          #ef2020
+        {%elif case=='O'%}
+          #ffce25
+        {%else%}
+          #ffffff
+        {%endif%};
+      "></td>
       {%endfor%}
     </tr>
     {%endfor%}
