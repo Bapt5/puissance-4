@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Puissance 4</title>
-  <!-- <link rel="stylesheet" type="text/css" title="Cool stylesheet" href="style.css"> -->
+  <script src="{{url_for('static',filename='js/main.js')}}" type="text/javascript"></script>
   <style>
   .case{
     background-color:white;
@@ -13,11 +13,14 @@
     width:50px;
     border: 5px solid blue;
   }
+  #fleche{
+    height:50px;margin-left: 36%;
+  }
   </style>
 </head>
-<body style="margin:0px;padding:2%;width:100%;">
-  <!-- <div style="background-color:blue;top:0;left:0;right:0;bottom:0;"> -->
-    <table style="background-color:blue;margin-left:35%;margin-top:7%;padding-left:1%;padding-right:1%;padding-top:0%;padding-bottom:2%;">
+<body onkeydown="touche(event);" style="margin:0px;padding:2%;width:100%;">
+  <img id="fleche" src="{{url_for('static',filename='image/fleche.png')}}"  />
+    <table style="background-color:blue;margin-left:35%;margin-top:2%;padding-left:1%;padding-right:1%;padding-top:0%;padding-bottom:2%;">
       {%for ligne in matrice%}
       <tr>
         {%for case in ligne%}
@@ -26,8 +29,5 @@
       </tr>
       {%endfor%}
     </table>
-  <!-- </div> -->
-
-  <!-- <script src="main.js" type="text/javascript"></script> -->
 </body>
 </html>
