@@ -16,7 +16,13 @@ def index():
         if request.method == 'GET':
             return render_template('index.html', matrice=session['jeu'])
         else:
-            print(request.form['colonne'])
+            jouer = False
+            for ligne in range(len(jeu) + 1, -1, -1):
+                if session['jeu'][ligne][request.form['colonne'] - 1] == "":
+                    session['jeu'][ligne][request.form['colonne'] - 1] = X
+                    jouer = True  # indique que le joueur à jouer
+                    break
+            # Si il n'a pas jouer on le refera jouer
             return render_template('index.html', matrice=session['jeu'])
     else:
         session['jeu'] = jeu
