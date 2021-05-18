@@ -24,7 +24,6 @@ def index():
                     jouer = True  # indique que le joueur à jouer
                     break
             # Si il n'a pas jouer on le refera jouer
-            print(session['jeu'])
             return str(jouer)
     else:
         session['jeu'] = jeu
