@@ -20,11 +20,12 @@ def index():
             for ligne in range(len(jeu) - 1, -1, -1):
                 colonne = int(request.form['colonne']) - 1
                 if session['jeu'][ligne][colonne] == "":
-                    session['jeu'][ligne][colonne] = ''
+                    session['jeu'][ligne][colonne] = 'X'
                     jouer = True  # indique que le joueur à jouer
                     break
             # Si il n'a pas jouer on le refera jouer
-            return render_template('index.html', matrice=session['jeu'])
+            print(session['jeu'])
+            return str(jouer)
     else:
         session['jeu'] = jeu
         return render_template('index.html', matrice=session['jeu'])
