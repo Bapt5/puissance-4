@@ -18,7 +18,10 @@ def index():
 
 @app.route('/game')
 def game():
-    return render_template('index.html', matrice=session['jeu'])
+    if 'jeu' in session:
+        return render_template('index.html', matrice=session['jeu'])
+    else:
+        return redirect(url_for('index'))
 
 
 if __name__ == "__main__":
