@@ -9,14 +9,15 @@
   .case{
     background-color:white;
     border-radius:50%;
-    height:150px;
+    height:50px;
     width:50px;
+    border: 5px solid blue;
   }
   </style>
 </head>
-<body style="margin:0px;height:100%;width:100%;background-color:blue;">
+<body style="margin:0px;padding:2%;width:100%;">
   <!-- <div style="background-color:blue;top:0;left:0;right:0;bottom:0;"> -->
-    <table style="width:100%;height:100%;">
+    <table style="background-color:blue;margin-left:35%;margin-top:7%;padding-left:1%;padding-right:1%;padding-top:0%;padding-bottom:2%;">
       {%for ligne in matrice%}
       <tr>
         {%for case in ligne%}
