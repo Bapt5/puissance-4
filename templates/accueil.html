@@ -12,32 +12,40 @@
   <style>
     .choix:hover{
       cursor:pointer;
-      border: 2px black solid
     }
     .lien{
       text-decoration: none;
+      background-color:blue;
+      border-radius:50px;
+      padding:5%;
+      font-size:50px;
+      width:40%;
+      height:70%;
+    }
+    .lien:hover{
+      border: 2px black solid
     }
   </style>
 </head>
 
 
 <body style="background-color: blue;">
-<h1 style="text-align:center;">Puissance 4</h1>
+<h1 style="text-align:center;font-size:50px;color:white;">Puissance 4</h1>
 <br />
 <br />
 <br />
   <div style="display:flex;justify-content:space-evenly;align-items:center;">
     <a class="lien" href="{{url_for('/'}}">
-      <div class="choix" style="background-color:blue;color:#ffce25;border-radius:50px;padding:8%;font-size:40px;">
+      <div class="choix" style="color:#ffce25;">
       <p>
-        Jouer à 2
+        Jouer à 2 👫
         </p>
       </div>
     </a>
     <a class="lien" href="{{url_for('/'}}">
-    <div class="choix" style="background-color:blue;color:#ef2020;border-radius:50px;padding:8%;font-size:40px;">
+    <div class="choix" style="color:#ef2020">
       <p>
-        Jouer contre l'ordinateur
+        Jouer contre l'ordinateur 💻
         </p>
     </div>
     </a>
