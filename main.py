@@ -29,6 +29,12 @@ def posePion(jeu, colonne, joueur):
             break
     return jeu, aJoue
 
+def win(jeu):
+    for ligne in range(len(jeu) - 1, -1, -1):
+        # si la case est libre on place le pion
+        if jeu[ligne][colonne] == "":
+            jeu[ligne][colonne] = joueur
+    return winer
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
