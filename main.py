@@ -7,16 +7,13 @@ from random import randint
 app = Flask(__name__)
 
 # matrice du jeu
-matriceJeu = [['', '', '', '', '', '', ''],
-              ['', '', '', '', '', '', ''],
-              ['', '', '', '', '', '', ''],
-              ['', '', '', '', '', '', ''],
-              ['', '', '', '', '', '', ''],
-              ['', '', '', '', '', '', '']]
-# [["" for i in range(7)] for i in range(6)]
+matriceJeu = [["" for i in range(7)] for i in range(6)]
 
 
 def verifWin(liste):
+    '''prend en paramètre une liste, la transforme en chaine de caractère
+    et vérifie si il y a une suite de 4 pions dedans. Renvoie le joueur
+    gagant si il y en a un'''
     chaine = ''.join(liste)
     if 'XXXX' in chaine:
         return 'X'
@@ -27,20 +24,18 @@ def verifWin(liste):
 
 
 def defilVerif(matrice):
-    for ligne in matrice:
+    '''prend en paramètre une matrice, la découpe en liste pour chaqu'une
+    de ces lignes, colonnes et diagionales Renvoie le joueur gagant si
+    il y en a un'''
+    for ligne in matrice:  # pour chaque ligne
         result = verifWin(ligne)
         if result:
             return result
-    for col in range(0, len(matrice[0])):
-        colonne = []
-        for lign in range(0, len(matrice)):
-            colonne.append(matrice[lign][col])
+    for col in range(0, len(matrice[0])):  # pour chaque colonne
+        colonne = [matrice[lign][col] for lign in range(0, len(matrice))]
         result = verifWin(colonne)
         if result:
             return result
-
-
-print(defilVerif(matriceJeu))
 
 
 def posePion(jeu, colonne, joueur):
