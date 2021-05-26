@@ -7,31 +7,63 @@ from random import randint
 app = Flask(__name__)
 
 # matrice du jeu
-matrice = [["" for i in range(7)] for i in range(6)]
+matriceJeu = [['', '', '', '', '', '', ''],
+              ['', '', '', '', '', '', ''],
+              ['', '', '', '', '', '', ''],
+              ['', '', '', '', '', '', ''],
+              ['', '', '', '', '', '', ''],
+              ['', '', '', '', '', '', '']]
+# [["" for i in range(7)] for i in range(6)]
 
+
+def verifWin(liste):
+    chaine = ''.join(liste)
+    if 'XXXX' in chaine:
+        return 'X'
+    elif 'OOOO' in chaine:
+        return 'O'
+    else:
+        return
+
+
+def defilVerif(matrice):
+    for ligne in matrice:
+        result = verifWin(ligne)
+        if result:
+            return result
+    for col in range(0, len(matrice[0])):
+        colonne = []
+        for lign in range(0, len(matrice)):
+            colonne.append(matrice[lign][col])
+        result = verifWin(colonne)
+        if result:
+            return result
+
+
+print(defilVerif(matriceJeu))
 
 
 def posePion(jeu, colonne, joueur):
     '''Prend en paramètre la matrice du jeu et la colonne ou
     on joue et renvoie la matrice et si le pion a pu etre placé'''
-    if joueur=='X':
-        session['joueur']='O'
-    if joueur=='O':
-        session['joueur']='X'
     aJoue = False
     # on défile les lignes dans le sens inverse
     for ligne in range(len(jeu) - 1, -1, -1):
         # si la case est libre on place le pion
         if jeu[ligne][colonne] == "":
             jeu[ligne][colonne] = joueur
-
             aJoue = True  # indique que le pion a été placé
             break
     return jeu, aJoue
 
 
-@app.route('/', methods=['GET', 'POST'])
-def index():
+@app.route('/')
+def accueil():
+    return render_template('accueil.html')
+
+
+@app.route('/jeu', methods=['GET', 'POST'])
+def jeu():
     # si la matrice de jeu est en session
     if 'jeu' in session:
         # si la methode est GET on génére le template avec la matrice
@@ -41,31 +73,42 @@ def index():
             # sinon on pose le pion dans la colonne envoyer en POST
             session['jeu'], aJoue = posePion(
                 session['jeu'], int(request.form['colonne']) - 1, session['joueur'])
+            win = defilVerif(session['jeu'])
             if aJoue == True:
-                return render_template('refresh.html', matrice=session['jeu'])
+                if session['joueur'] == 'X':
+                    session['joueur'] = 'O'
+                elif session['joueur'] == 'O':
+                    session['joueur'] = 'X'
+                message = ''
+            elif win:  # si un des joueurs a gagné
+                if win == 'X'
+                message = 'Les rouges ont gagné'
+                else:
+                    message = 'Les jaunes ont gagné'
             else:  # Si il n'a pas jouer on le refait jouer
-                return 'None'
+                message = 'Tu ne peux pas jouer ici ! Rejoue !'
+            return render_template('refresh.html', matrice=session['jeu'], message=message)
     else:
         # créé la matrice de jeu
-        session['jeu'] = matrice
-        resul=randint(0,1)
-        if resul==0:
-            session['joueur']='O'
-        if resul==1:
-            session['joueur']='X'
+        session['jeu'] = matriceJeu
+        resul = randint(0, 1)
+        if resul == 0:
+            session['joueur'] = 'O'
+        if resul == 1:
+            session['joueur'] = 'X'
         return render_template('index.html', matrice=session['jeu'])
 
 
 @app.route('/rejouer/')
 def rejouer():
     # vide la matrice de jeu pour rejouer
-    session['jeu'] = matrice
-    resul=randint(0,1)
-    if resul==0:
-        session['joueur']='O'
-    if resul==1:
-        session['joueur']='X'
-    return redirect(url_for('index'))
+    session['jeu'] = matriceJeu
+    resul = randint(0, 1)
+    if resul == 0:
+        session['joueur'] = 'O'
+    if resul == 1:
+        session['joueur'] = 'X'
+    return redirect(url_for('jeu'))
 
 
 if __name__ == "__main__":
