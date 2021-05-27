@@ -76,8 +76,8 @@ def jeu():
                     session['joueur'] = 'X'
                 message = ''
             elif win:  # si un des joueurs a gagné
-                if win == 'X'
-                message = 'Les rouges ont gagné'
+                if win == 'X':
+                    message = 'Les rouges ont gagné'
                 else:
                     message = 'Les jaunes ont gagné'
             else:  # Si il n'a pas jouer on le refait jouer
