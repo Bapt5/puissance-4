@@ -11,16 +11,20 @@ matriceJeu = [["" for i in range(7)] for i in range(6)]
 
 
 def get_diagonales(matrice):
+    '''Cette fonction prend en paramètre une matrice et renvoie toutes ses diagonales'''
     nbCol = len(matrice[0])
     nbRow = len(matrice)
-    diagGauche = [[] for i in range(nbRow + nbCol - 1)]
-    diagDroite = [[] for i in range(len(diagGauche))]
+    # créé la structure qui va recevoir les diagonales
+    diagDroite = [[] for i in range(nbRow + nbCol - 1)]
+    diagGauche = [[] for i in range(len(diagDroite))]
 
     for x in range(nbCol):
         for y in range(nbRow):
-            diagGauche[x + y].append(matrice[y][x])
-            diagDroite[x - y + nbRow - 1].append(matrice[y][x])
-    return (diagGauche, diagDroite)
+            # formule mathématique trouvé sur internet
+            # permet d'ajouter la case actuelle dans la bonne diagonale
+            diagDroite[x + y].append(matrice[y][x])
+            diagGauche[x - y + nbRow - 1].append(matrice[y][x])
+    return diagDroite + diagGauche
 
 
 def verifWin(liste):
@@ -49,11 +53,10 @@ def defilVerif(matrice):
         result = verifWin(colonne)
         if result:
             return result
-    for diags in get_diagonales(matrice):
-        for diag in diags:
-            result = verifWin(diag)
-            if result:
-                return result
+    for diag in get_diagonales(matrice):
+        result = verifWin(diag)
+        if result:
+            return result
 
 
 def posePion(jeu, colonne, joueur):
