@@ -10,6 +10,19 @@ app = Flask(__name__)
 matriceJeu = [["" for i in range(7)] for i in range(6)]
 
 
+def get_diagonales(matrice):
+    nbCol = len(matrice[0])
+    nbRow = len(matrice)
+    diagGauche = [[] for i in range(nbRow + nbCol - 1)]
+    diagDroite = [[] for i in range(len(diagGauche))]
+
+    for x in range(nbCol):
+        for y in range(nbRow):
+            diagGauche[x + y].append(matrice[y][x])
+            diagDroite[x - y + nbRow - 1].append(matrice[y][x])
+    return (diagGauche, diagDroite)
+
+
 def verifWin(liste):
     '''prend en paramètre une liste, la transforme en chaine de caractère
     et vérifie si il y a une suite de 4 pions dedans. Renvoie le joueur
@@ -36,6 +49,11 @@ def defilVerif(matrice):
         result = verifWin(colonne)
         if result:
             return result
+    for diags in get_diagonales(matrice):
+        for diag in diags:
+            result = verifWin(diag)
+            if result:
+                return result
 
 
 def posePion(jeu, colonne, joueur):
