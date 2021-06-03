@@ -74,8 +74,10 @@ def posePion(jeu, colonne, joueur):
 
 @app.route('/')
 def accueil():
+    # créé la matrice de jeu et initialise les variable de
     session['jeu'] = matriceJeu
     session['fin'] = False
+    # on choisi aléatoirement le joueur de départ
     resul = randint(0, 1)
     if resul == 0:
         session['joueur'] = 'O'
@@ -112,14 +114,18 @@ def jeu():
             # sinon on pose le pion dans la colonne envoyer en POST
             session['jeu'], aJoue = posePion(session['jeu'], int(
                 request.form['colonne']) - 1, session['joueur'])
-            win = defilVerif(session['jeu'])
+            # si le joueur à joué
             if aJoue == True:
+                # on change le joueur et on indique le joueur
                 if session['joueur'] == 'X':
                     session['joueur'] = 'O'
                     message = "C'est au tour des jaunes"
                 elif session['joueur'] == 'O':
                     session['joueur'] = 'X'
                     message = "C'est au tour des rouges"
+                # cherche si il y a un gagnant
+                win = defilVerif(session['jeu'])
+                # indique les gagnants
                 if win == 'X':
                     message = 'Les rouges ont gagné'
                     session['fin'] = True
@@ -133,9 +139,10 @@ def jeu():
             else:
                 return render_template('end.html', matrice=session['jeu'], win=message)
     else:
-        # créé la matrice de jeu
+        # créé la matrice de jeu et initialise les variable de jeu
         session['jeu'] = matriceJeu
         session['fin'] = False
+        # on choisi aléatoirement le joueur de départ
         resul = randint(0, 1)
         if resul == 0:
             session['joueur'] = 'O'
@@ -148,9 +155,10 @@ def jeu():
 
 @app.route('/rejouer/')
 def rejouer():
-    # vide la matrice de jeu pour rejouer
+    # vide les variable de jeu pour rejouer
     session['jeu'] = matriceJeu
     session['fin'] = False
+    # on choisi aléatoirement le joueur de départ
     resul = randint(0, 1)
     if resul == 0:
         session['joueur'] = 'O'
