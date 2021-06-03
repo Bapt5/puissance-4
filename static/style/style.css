@@ -23,8 +23,22 @@ table {
   padding-bottom: 2%;
 }
 
-#error{
+#error {
   color: red;
   font-size: 30px;
   text-align: center;
+}
+
+#win {
+  position: fixed;
+  left: 20%;
+  top: 20%;
+  font-size: 86px;
+  padding: 3%;
+  background: #ffffffee;
+}
+
+.restart{
+  text-align: center;
+  font-size: 36px;
 }

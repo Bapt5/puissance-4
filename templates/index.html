@@ -13,27 +13,13 @@
 
 <body>
   <div id="contentRefresh">
-    <table>
-      {%for ligne in matrice%}
-      <tr>
-        {%for case in ligne%}
-        <td onclick="send({{loop.index}})" class="case" style="
-        background-color:
-        {%if case=='X'%}
-          #ef2020
-        {%elif case=='O'%}
-          #ffce25
-        {%else%}
-          #ffffff
-        {%endif%};
-      "></td>
-        {%endfor%}
-      </tr>
-      {%endfor%}
-    </table>
-    <p id="error"></p>
+    {%if win%}
+      {% include "end.html" with context %}
+    {%else%}
+        {% include "refresh.html" with context %}
+    {%endif%}
   </div>
-  <button onclick="window.location.replace('{{url_for('rejouer')}}');">Rejouer</button>
+  <button class="restart" onclick="window.location.replace('{{url_for('rejouer')}}');">Rejouer</button>
 </body>
 
 </html>

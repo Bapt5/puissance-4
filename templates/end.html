@@ -2,7 +2,7 @@
   {%for ligne in matrice%}
   <tr>
     {%for case in ligne%}
-    <td onclick="send({{loop.index}})" class="case" style="
+    <td class="case" style="
     background-color:
     {%if case=='X'%}
       #ef2020
@@ -11,11 +11,11 @@
     {%else%}
       #ffffff
     {%endif%};
-  "></td>
+    "></td>
     {%endfor%}
   </tr>
   {%endfor%}
 </table>
-<p id="error" style="color: {{'#ffce25' if 'jaune' in message else '#ef2020'}};">
-  {{message}}
+<p id="win" style="color: {{'#ef2020' if 'rouge' in win else '#ffce25'}};">
+  {{win}}
 </p>

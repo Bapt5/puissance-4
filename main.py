@@ -69,58 +69,88 @@ def posePion(jeu, colonne, joueur):
             jeu[ligne][colonne] = joueur
             aJoue = True  # indique que le pion a été placé
             break
-        return jeu, aJoue
+    return jeu, aJoue
 
 
 @app.route('/')
 def accueil():
+    session['jeu'] = matriceJeu
+    session['fin'] = False
+    resul = randint(0, 1)
+    if resul == 0:
+        session['joueur'] = 'O'
+    if resul == 1:
+        session['joueur'] = 'X'
     return render_template('accueil.html')
 
 
 @app.route('/jeu', methods=['GET', 'POST'])
 def jeu():
-    if session['fin']==False:
-        # si la matrice de jeu est en session
-        if 'jeu' in session:
-            # si la methode est GET on génére le template avec la matrice
-            if request.method == 'GET':
-                return render_template('index.html', matrice=session['jeu'])
+    # si la matrice de jeu est en session
+    if 'jeu' in session and 'fin' in session:
+        # si la methode est GET on génére le template avec la matrice
+        if request.method == 'GET':
+            # indique le tour
+            if session['joueur'] == 'X':
+                message = "C'est au tour des rouges"
+            elif session['joueur'] == 'O':
+                message = "C'est au tour des jaunes"
+            # cherche si il y a un gagnant
+            win = defilVerif(session['jeu'])
+            # indique le gagnant
+            if win == 'X':
+                message = 'Les rouges ont gagné'
+                session['fin'] = True
+            elif win == 'O':
+                message = 'Les jaunes ont gagné'
+                session['fin'] = True
+            if session['fin'] == False:
+                return render_template('index.html', matrice=session['jeu'], message=message)
             else:
-                # sinon on pose le pion dans la colonne envoyer en POST
-                session['jeu'], aJoue = posePion(
-                    session['jeu'], int(request.form['colonne']) - 1, session['joueur'])
-                win = defilVerif(session['jeu'])
-                if aJoue == True:
-                    if session['joueur'] == 'X':
-                        session['joueur'] = 'O'
-                    elif session['joueur'] == 'O':
-                        session['joueur'] = 'X'
-                    message = ''
-                    if win == 'X':
-                        message = 'Les rouges ont gagné'
-                        session['fin']=True
-                    elif win == 'O':
-                        message = 'Les jaunes ont gagné'
-                        session['fin']=True
-                else:  # Si il n'a pas jouer on le refait jouer
-                    message = 'Tu ne peux pas jouer ici ! Rejoue !'
-                return render_template('refresh.html', matrice=session['jeu'], message=message)
+                return render_template('index.html', matrice=session['jeu'], win=message)
         else:
-            # créé la matrice de jeu
-            session['jeu'] = matriceJeu
-            session['fin'] = False
-            resul = randint(0, 1)
-            if resul == 0:
-                session['joueur'] = 'O'
-            if resul == 1:
-                session['joueur'] = 'X'
-            return render_template('index.html', matrice=session['jeu'])
+            # sinon on pose le pion dans la colonne envoyer en POST
+            session['jeu'], aJoue = posePion(session['jeu'], int(
+                request.form['colonne']) - 1, session['joueur'])
+            win = defilVerif(session['jeu'])
+            if aJoue == True:
+                if session['joueur'] == 'X':
+                    session['joueur'] = 'O'
+                    message = "C'est au tour des jaunes"
+                elif session['joueur'] == 'O':
+                    session['joueur'] = 'X'
+                    message = "C'est au tour des rouges"
+                if win == 'X':
+                    message = 'Les rouges ont gagné'
+                    session['fin'] = True
+                elif win == 'O':
+                    message = 'Les jaunes ont gagné'
+                    session['fin'] = True
+            else:  # Si il n'a pas jouer on le refait jouer
+                message = 'Tu ne peux pas jouer ici ! Rejoue !'
+            if session['fin'] == False:
+                return render_template('refresh.html', matrice=session['jeu'], message=message)
+            else:
+                return render_template('end.html', matrice=session['jeu'], win=message)
+    else:
+        # créé la matrice de jeu
+        session['jeu'] = matriceJeu
+        session['fin'] = False
+        resul = randint(0, 1)
+        if resul == 0:
+            session['joueur'] = 'O'
+            message = "C'est au tour des jaunes"
+        if resul == 1:
+            session['joueur'] = 'X'
+            message = "C'est au tour des rouges"
+        return render_template('index.html', matrice=session['jeu'], message=message)
 
 
 @app.route('/rejouer/')
 def rejouer():
     # vide la matrice de jeu pour rejouer
     session['jeu'] = matriceJeu
+    session['fin'] = False
     resul = randint(0, 1)
     if resul == 0:
         session['joueur'] = 'O'
@@ -132,4 +162,4 @@ def rejouer():
 if __name__ == "__main__":
     app.secret_key = os.urandom(24)
     # Lancement de l'application, à l'adresse 127.0.0.0 et sur le port 3000
-    app.run(host="127.0.0.1", port=3000, debug=True)
+    app.run(host="127.0.0.1", port=3000)
